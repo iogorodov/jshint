@@ -2741,7 +2741,7 @@ var JSHINT = (function() {
 
     if (!id) {
       if (state.tokens.next.id === "(string)") {
-        id = state.tokens.next.value;
+        id = state.tokens.next.value.replace(/\\"/g, "\"");
         if (!preserve) {
           advance();
         }

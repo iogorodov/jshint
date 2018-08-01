@@ -2062,6 +2062,54 @@ exports.duplicateProto = function (test) {
   test.done();
 };
 
+exports.duplicateKeys = function(test) {
+  var src = [
+    "var x = {",
+    "  a: 10,",
+    "  a: 20",
+    "};"
+  ];
+
+  TestRun(test, "Duplicate simple keys")
+    .addError(3, 4, "Duplicate key 'a'.")
+    .test(src);
+
+  src = [
+    "var x = {",
+    "  '\"': 10,",
+    "  '\\\"': 20",
+    "};"
+  ];
+
+  TestRun(test, "Duplicate keys with double quote")
+    .addError(3, 7, "Duplicate key '\"'.")
+    .test(src);
+
+  src = [
+    "var x = {",
+    "  \"'\": 10,",
+    "  \"\\\'\": 20",
+    "};"
+  ];
+
+  TestRun(test, "Duplicate keys with single quote")
+    .addError(3, 7, "Duplicate key '''.")
+    .test(src);
+
+  src = [
+    "var x = {",
+    "  ':': 10,",
+    "  '\:': 20",
+    "};"
+  ];
+
+  TestRun(test, "Duplicate keys with escape")
+    .addError(3, 6, "Duplicate key ':'.")
+    .test(src);
+
+  test.done();
+};
+
 exports["gh-2761"] = function (test) {
   var code = [
     "/* global foo: false */",
